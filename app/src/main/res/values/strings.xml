@@ -1,12 +1,14 @@
 <resources>
-    <!-- Títulos y mensajes -->
     <string name="app_name">MarketJava</string>
     <string name="login_title">MarketJava</string>
-    <string name="email_hint">Correo electrónico</string>
-    <string name="password_hint">Contraseña</string>
-    <string name="login_button_text">Iniciar sesión</string>
-    <string name="email_error">Por favor, ingresa un correo válido.</string>
-    <string name="password_error">La contraseña no puede estar vacía.</string>
+    <string name="email_hint">Correo electronico</string>
+    <string name="password_hint">Contrasena</string>
+    <string name="login_button_text">Iniciar sesion</string>
+    <string name="email_error">Por favor, ingresa un correo valido.</string>
+    <string name="password_error">La contrasena no puede estar vacia.</string>
+    <string name="login_subtitle">Compra tecnologia, moda y hogar desde tu movil</string>
+    <string name="continuar_seguro">Continuar de forma segura</string>
+
     <string name="carrito_title">MarketJava</string>
     <string name="cargar_productos">Cargar productos</string>
     <string name="productos_api">Productos de la API</string>
@@ -19,6 +21,19 @@
     <string name="ofertas_flash">Ofertas flash</string>
     <string name="envio_gratis">Envio gratis</string>
     <string name="mas_vendidos">Mas vendidos</string>
-    <string name="login_subtitle">Compra tecnologia, moda y hogar desde tu movil</string>
-    <string name="continuar_seguro">Continuar de forma segura</string>
+    <string name="comprar">Comprar</string>
+
+    <string name="cuenta_title">Mi cuenta</string>
+    <string name="cuenta_description">Sesion activa. Desde aqui podras revisar tus datos y pedidos.</string>
+    <string name="menu_title">Menu</string>
+    <string name="menu_description">Explora categorias, ofertas y configuracion de la tienda.</string>
+    <string name="categorias_title">Categorias disponibles</string>
+    <string name="configuracion_title">Configuracion</string>
+    <string name="cerrar_sesion">Cerrar sesion</string>
+    <string name="proximamente">Proximamente</string>
+
+    <string name="home">Inicio</string>
+    <string name="account">Cuenta</string>
+    <string name="cart">Carrito</string>
+    <string name="menu">Menu</string>
 </resources>

@@ -1,8 +1,8 @@
-package com.proyecto.e_commerce_java.data.repositories;
+package com.proyecto.e_commerce_java.data.repositories.User;
 
-import com.proyecto.e_commerce_java.data.remote.ApiService;
-import com.proyecto.e_commerce_java.data.remote.LoginRequest;
-import com.proyecto.e_commerce_java.data.remote.LoginResponse;
+import com.proyecto.e_commerce_java.data.remote.ServicesApiClient.ApiService;
+import com.proyecto.e_commerce_java.data.remote.LoginApi.LoginRequest;
+import com.proyecto.e_commerce_java.data.remote.LoginApi.LoginResponse;
 import com.proyecto.e_commerce_java.domain.repositories.UserRepository;
 
 import retrofit2.Call;

@@ -1,4 +1,4 @@
-package com.proyecto.e_commerce_java.presentation.carrito;
+package com.proyecto.e_commerce_java.presentation.home;
 
 import android.os.Bundle;
 import android.widget.Button;
@@ -8,20 +8,20 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.proyecto.e_commerce_java.R;
 import com.proyecto.e_commerce_java.domain.Entities.Producto;
+import com.proyecto.e_commerce_java.presentation.navigation.BottomNavigationHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class CarritoActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
     public static final String EXTRA_TOKEN = "token";
 
-    private CarritoViewModel viewModel;
+    private HomeViewModel viewModel;
     private TextView productosApiText;
-    private TextView carritoText;
-    private TextView totalText;
     private Button cargarProductosButton;
     private Button agregarPrimerProductoButton;
     private List<Producto> productosApi = new ArrayList<>();
@@ -29,33 +29,43 @@ public class CarritoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_carrito);
+        setContentView(R.layout.activity_main_home);
 
+        bindViews();
+        configureViewModel();
+        configureActions();
+        configureBottomNavigation();
+    }
+
+    private void bindViews() {
         productosApiText = findViewById(R.id.productosApiText);
-        carritoText = findViewById(R.id.carritoText);
-        totalText = findViewById(R.id.totalText);
         cargarProductosButton = findViewById(R.id.cargarProductosButton);
         agregarPrimerProductoButton = findViewById(R.id.agregarPrimerProductoButton);
-        viewModel = new ViewModelProvider(this).get(CarritoViewModel.class);
+    }
 
-        cargarProductosButton.setOnClickListener(view -> viewModel.cargarProductos());
-        agregarPrimerProductoButton.setOnClickListener(view -> agregarPrimerProducto());
+    private void configureViewModel() {
+        viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         viewModel.getProductosApiLiveData().observe(this, productos -> {
-            productosApi = productos;
-            productosApiText.setText(formatProductos(productos));
+            productosApi = productos == null ? new ArrayList<>() : productos;
+            productosApiText.setText(formatProductos(productosApi));
         });
 
-        viewModel.getCarritoLiveData().observe(this, productos ->
-                carritoText.setText(formatProductos(productos)));
+        viewModel.getErrorLiveData().observe(this, error -> {
+            if (error != null && !error.trim().isEmpty()) {
+                Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
-        viewModel.getTotalLiveData().observe(this, total ->
-                totalText.setText(String.format(Locale.US, "Total: $%.2f", total)));
+    private void configureActions() {
+        cargarProductosButton.setOnClickListener(view -> viewModel.cargarProductos());
+        agregarPrimerProductoButton.setOnClickListener(view -> agregarPrimerProducto());
+    }
 
-        viewModel.getErrorLiveData().observe(this, error ->
-                Toast.makeText(this, error, Toast.LENGTH_SHORT).show());
-
-        viewModel.actualizarCarrito();
+    private void configureBottomNavigation() {
+        BottomNavigationView bottomNavigation = findViewById(R.id.bottomNavigation);
+        BottomNavigationHelper.setup(this, bottomNavigation, R.id.nav_home);
     }
 
     private void agregarPrimerProducto() {
@@ -65,11 +75,12 @@ public class CarritoActivity extends AppCompatActivity {
         }
 
         viewModel.agregarProducto(productosApi.get(0));
+        Toast.makeText(this, "Producto agregado al carrito", Toast.LENGTH_SHORT).show();
     }
 
     private String formatProductos(List<Producto> productos) {
         if (productos == null || productos.isEmpty()) {
-            return "Sin productos";
+            return getString(R.string.sin_productos);
         }
 
         StringBuilder builder = new StringBuilder();
@@ -87,6 +98,6 @@ public class CarritoActivity extends AppCompatActivity {
                     .append("\n\n");
         }
 
-        return builder.toString();
+        return builder.toString().trim();
     }
 }

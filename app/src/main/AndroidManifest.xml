@@ -15,7 +15,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ECommerceJava">
         <activity
+            android:name=".presentation.menu.MenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.perfil.PerfilActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.carrito.CarritoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.home.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.login.LoginActivity"

@@ -1,4 +1,4 @@
-package com.proyecto.e_commerce_java.data.remote;
+package com.proyecto.e_commerce_java.data.remote.LoginApi;
 
 public class LoginRequest {
     private final String email;

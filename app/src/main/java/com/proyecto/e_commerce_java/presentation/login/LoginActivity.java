@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.proyecto.e_commerce_java.R;
-import com.proyecto.e_commerce_java.presentation.carrito.CarritoActivity;
+import com.proyecto.e_commerce_java.presentation.home.HomeActivity;
 
 public class LoginActivity extends AppCompatActivity {
     private LoginViewModel viewModel;
@@ -41,8 +41,8 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         viewModel.getUserLiveData().observe(this, user -> {
-            Intent intent = new Intent(this, CarritoActivity.class);
-            intent.putExtra(CarritoActivity.EXTRA_TOKEN, user.getToken());
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.putExtra(HomeActivity.EXTRA_TOKEN, user.getToken());
             startActivity(intent);
         });
 

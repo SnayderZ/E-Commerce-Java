@@ -1,6 +1,6 @@
-package com.proyecto.e_commerce_java.data.repositories;
+package com.proyecto.e_commerce_java.data.repositories.Product;
 
-import com.proyecto.e_commerce_java.data.remote.ApiService;
+import com.proyecto.e_commerce_java.data.remote.ServicesApiClient.ApiService;
 import com.proyecto.e_commerce_java.domain.Entities.Producto;
 import com.proyecto.e_commerce_java.domain.repositories.ProductoRepository;
 
@@ -12,8 +12,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProductRepositoryImpl implements ProductoRepository {
+    private static final List<Producto> carrito = new ArrayList<>();
+
     private final ApiService apiService;
-    private final List<Producto> carrito = new ArrayList<>();
 
     public ProductRepositoryImpl(ApiService apiService) {
         this.apiService = apiService;

@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.proyecto.e_commerce_java.data.remote.ApiService;
-import com.proyecto.e_commerce_java.data.remote.RetrofitClient;
-import com.proyecto.e_commerce_java.data.repositories.UserRepositoryImpl;
+import com.proyecto.e_commerce_java.data.remote.ServicesApiClient.ApiService;
+import com.proyecto.e_commerce_java.data.remote.ServicesApiClient.RetrofitClient;
+import com.proyecto.e_commerce_java.data.repositories.User.UserRepositoryImpl;
 import com.proyecto.e_commerce_java.domain.Entities.User;
 import com.proyecto.e_commerce_java.domain.UseCases.LoginUseCase;
 import com.proyecto.e_commerce_java.domain.repositories.UserRepository;
