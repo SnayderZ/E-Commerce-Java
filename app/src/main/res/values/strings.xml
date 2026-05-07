@@ -1,0 +1,24 @@
+<resources>
+    <!-- Títulos y mensajes -->
+    <string name="app_name">MarketJava</string>
+    <string name="login_title">MarketJava</string>
+    <string name="email_hint">Correo electrónico</string>
+    <string name="password_hint">Contraseña</string>
+    <string name="login_button_text">Iniciar sesión</string>
+    <string name="email_error">Por favor, ingresa un correo válido.</string>
+    <string name="password_error">La contraseña no puede estar vacía.</string>
+    <string name="carrito_title">MarketJava</string>
+    <string name="cargar_productos">Cargar productos</string>
+    <string name="productos_api">Productos de la API</string>
+    <string name="agregar_primer_producto">Agregar primer producto al carrito</string>
+    <string name="carrito_productos">Productos en carrito</string>
+    <string name="sin_productos">Sin productos</string>
+    <string name="total_default">Total: $0.00</string>
+    <string name="buscar_hint">Buscar productos, marcas y ofertas</string>
+    <string name="entrega_text">Enviar a tu ubicacion</string>
+    <string name="ofertas_flash">Ofertas flash</string>
+    <string name="envio_gratis">Envio gratis</string>
+    <string name="mas_vendidos">Mas vendidos</string>
+    <string name="login_subtitle">Compra tecnologia, moda y hogar desde tu movil</string>
+    <string name="continuar_seguro">Continuar de forma segura</string>
+</resources>

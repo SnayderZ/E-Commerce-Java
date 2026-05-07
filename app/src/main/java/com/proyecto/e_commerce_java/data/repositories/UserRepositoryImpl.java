@@ -1,0 +1,39 @@
+package com.proyecto.e_commerce_java.data.repositories;
+
+import com.proyecto.e_commerce_java.data.remote.ApiService;
+import com.proyecto.e_commerce_java.data.remote.LoginRequest;
+import com.proyecto.e_commerce_java.data.remote.LoginResponse;
+import com.proyecto.e_commerce_java.domain.repositories.UserRepository;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class UserRepositoryImpl implements UserRepository {
+    private final ApiService apiService;
+
+    public UserRepositoryImpl(ApiService apiService) {
+        this.apiService = apiService;
+    }
+
+    @Override
+    public void login(String email, String password, LoginCallback callback) {
+        LoginRequest request = new LoginRequest(email, password);
+
+        apiService.login(request).enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body().toDomain());
+                } else {
+                    callback.onError("Credenciales invalidas");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable throwable) {
+                callback.onError(throwable.getMessage());
+            }
+        });
+    }
+}

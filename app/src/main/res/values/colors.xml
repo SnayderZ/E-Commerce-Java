@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colores principales -->
+    <color name="colorPrimary">#FF7A00</color>
+    <color name="colorPrimaryDark">#232F3E</color>
+    <color name="colorAccent">#00A8E1</color>
+
+    <color name="textColorPrimary">#202124</color>
+    <color name="textColorSecondary">#6B7280</color>
+
+    <color name="backgroundColor">#F3F4F6</color>
+    <color name="buttonBackground">#FF7A00</color>
+
+    <!-- Otros colores -->
+    <color name="errorColor">#B00020</color> <!-- Color de error (rojo) -->
+</resources>
