@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Colores principales -->
-    <color name="colorPrimary">#4CAF50</color>
-    <color name="colorPrimaryDark">#232F3E</color>
-    <color name="colorAccent">#00A8E1</color>
+    <color name="colorPrimary">#2F5D50</color>
+    <color name="colorPrimaryDark">#1F352F</color>
+    <color name="colorAccent">#E8C96B</color>
 
-    <color name="textColorPrimary">#202124</color>
-    <color name="textColorSecondary">#6B7280</color>
+    <color name="textColorPrimary">#21332D</color>
+    <color name="textColorSecondary">#6E7A73</color>
 
-    <color name="backgroundColor">#F3F4F6</color>
-    <color name="buttonBackground">#4CAF50</color>
+    <color name="backgroundColor">#F4F0E6</color>
+    <color name="surfaceColor">#FFFCF5</color>
+    <color name="surfaceBorderColor">#E5DCCA</color>
+    <color name="chipBackgroundColor">#EFE2BE</color>
+    <color name="inputBackgroundColor">#FFFDF7</color>
+    <color name="buttonBackground">#2F5D50</color>
 
-    <!-- Otros colores -->
-    <color name="errorColor">#B00020</color> <!-- Color de error (rojo) -->
+    <color name="errorColor">#B3261E</color>
 </resources>

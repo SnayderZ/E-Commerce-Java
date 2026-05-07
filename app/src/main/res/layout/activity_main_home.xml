@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/carrito_title"
-            android:textColor="@android:color/white"
+            android:textColor="@color/surfaceColor"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/entrega_text"
-            android:textColor="@android:color/white"
+            android:textColor="@color/surfaceColor"
             android:textSize="13sp" />
     </LinearLayout>
 
@@ -57,7 +57,7 @@
         android:id="@+id/categoryStrip"
         android:layout_width="0dp"
         android:layout_height="54dp"
-        android:background="@android:color/white"
+        android:background="@color/surfaceColor"
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -131,7 +131,7 @@
                 android:layout_height="48dp"
                 android:backgroundTint="@color/colorPrimary"
                 android:text="@string/cargar_productos"
-                android:textColor="@android:color/white"
+                android:textColor="@color/surfaceColor"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -189,7 +189,7 @@
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
+        android:background="@color/surfaceColor"
         app:itemIconTint="@color/colorPrimary"
         app:itemTextColor="@color/colorPrimary"
         app:labelVisibilityMode="labeled"

@@ -3,6 +3,7 @@ package com.proyecto.e_commerce_java.data.repositories.User;
 import com.proyecto.e_commerce_java.data.remote.ServicesApiClient.ApiService;
 import com.proyecto.e_commerce_java.data.remote.LoginApi.LoginRequest;
 import com.proyecto.e_commerce_java.data.remote.LoginApi.LoginResponse;
+import com.proyecto.e_commerce_java.domain.Entities.User;
 import com.proyecto.e_commerce_java.domain.repositories.UserRepository;
 
 import retrofit2.Call;
@@ -24,7 +25,13 @@ public class UserRepositoryImpl implements UserRepository {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    callback.onSuccess(response.body().toDomain());
+                    User user = response.body().toDomain();
+                    if (user.getToken() == null || user.getToken().trim().isEmpty()) {
+                        callback.onError("El servidor no devolvio un token de autenticacion");
+                        return;
+                    }
+
+                    callback.onSuccess(user);
                 } else {
                     callback.onError("Credenciales invalidas");
                 }

@@ -17,17 +17,13 @@ public class CarritoUseCase {
     }
 
     public List<Producto> obtenerProductosCarrito() {
-        return productoRepository.getProductos();
-    }
-
-    public void obtenerProductosApi(ProductoRepository.ProductosCallback callback) {
-        productoRepository.fetchProductos(callback);
+        return productoRepository.getProductosCarrito();
     }
 
     public double calcularTotal() {
         double total = 0;
 
-        for (Producto producto : productoRepository.getProductos()) {
+        for (Producto producto : productoRepository.getProductosCarrito()) {
             total += producto.getPrecio() * producto.getCantidad();
         }
 
