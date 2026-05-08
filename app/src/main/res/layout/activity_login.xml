@@ -63,7 +63,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/continuar_seguro"
+            android:text="@string/secure_continue"
             android:textColor="@color/textColorPrimary"
             android:textSize="22sp"
             android:textStyle="bold" />

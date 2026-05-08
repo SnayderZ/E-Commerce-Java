@@ -7,8 +7,8 @@ public class LoginResponse {
     @SerializedName("email")
     private String email;
 
-    @SerializedName("nombre")
-    private String nombre;
+    @SerializedName("name")
+    private String name;
 
     @SerializedName(value = "token", alternate = {"accessToken", "jwtToken", "jwt", "bearerToken"})
     private String token;

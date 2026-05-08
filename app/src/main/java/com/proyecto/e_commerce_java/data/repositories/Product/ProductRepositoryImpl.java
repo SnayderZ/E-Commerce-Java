@@ -1,10 +1,10 @@
 package com.proyecto.e_commerce_java.data.repositories.Product;
 
-import com.proyecto.e_commerce_java.data.remote.ProductApi.ProductoDto;
-import com.proyecto.e_commerce_java.data.remote.ProductApi.ProductosResponse;
+import com.proyecto.e_commerce_java.data.remote.ProductApi.ProductDto;
+import com.proyecto.e_commerce_java.data.remote.ProductApi.ProductsResponse;
 import com.proyecto.e_commerce_java.data.remote.ServicesApiClient.ApiService;
-import com.proyecto.e_commerce_java.domain.Entities.Producto;
-import com.proyecto.e_commerce_java.domain.repositories.ProductoRepository;
+import com.proyecto.e_commerce_java.domain.Entities.Product;
+import com.proyecto.e_commerce_java.domain.repositories.ProductRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +13,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProductRepositoryImpl implements ProductoRepository {
-    private static final List<Producto> carrito = new ArrayList<>();
+public class ProductRepositoryImpl implements ProductRepository {
+    private static final List<Product> cart = new ArrayList<>();
 
     private final ApiService apiService;
 
@@ -23,29 +23,29 @@ public class ProductRepositoryImpl implements ProductoRepository {
     }
 
     @Override
-    public List<Producto> getProductosCarrito() {
-        return carrito;
+    public List<Product> getCartProducts() {
+        return cart;
     }
 
     @Override
-    public void addProducto(Producto producto) {
-        carrito.add(producto);
+    public void addProduct(Product product) {
+        cart.add(product);
     }
 
     @Override
-    public void fetchProductos(String token, int pageNumber, int pageSize, ProductosCallback callback) {
-        apiService.getProductos(formatBearerToken(token), pageNumber, pageSize).enqueue(new Callback<ProductosResponse>() {
+    public void fetchProducts(String token, int pageNumber, int pageSize, ProductsCallback callback) {
+        apiService.getProducts(formatBearerToken(token), pageNumber, pageSize).enqueue(new Callback<ProductsResponse>() {
             @Override
-            public void onResponse(Call<ProductosResponse> call, Response<ProductosResponse> response) {
+            public void onResponse(Call<ProductsResponse> call, Response<ProductsResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    callback.onSuccess(mapProductos(response.body()));
+                    callback.onSuccess(mapProducts(response.body()));
                 } else {
                     callback.onError("Error " + response.code() + ": " + response.message());
                 }
             }
 
             @Override
-            public void onFailure(Call<ProductosResponse> call, Throwable throwable) {
+            public void onFailure(Call<ProductsResponse> call, Throwable throwable) {
                 callback.onError(throwable.getMessage());
             }
         });
@@ -64,26 +64,26 @@ public class ProductRepositoryImpl implements ProductoRepository {
         return "Bearer " + cleanToken;
     }
 
-    private List<Producto> mapProductos(ProductosResponse response) {
-        List<Producto> productos = new ArrayList<>();
+    private List<Product> mapProducts(ProductsResponse response) {
+        List<Product> products = new ArrayList<>();
         if (response.getItems() == null) {
-            return productos;
+            return products;
         }
 
-        for (ProductoDto productoDto : response.getItems()) {
-            if (!productoDto.isEstado()) {
+        for (ProductDto productDto : response.getItems()) {
+            if (!productDto.isActive()) {
                 continue;
             }
 
-            productos.add(new Producto(
-                    productoDto.getId(),
-                    productoDto.getName(),
-                    productoDto.getUnitPrice(),
-                    productoDto.getUnitsInStock(),
-                    productoDto.getImagen()
+            products.add(new Product(
+                    productDto.getId(),
+                    productDto.getName(),
+                    productDto.getUnitPrice(),
+                    productDto.getUnitsInStock(),
+                    productDto.getImage()
             ));
         }
 
-        return productos;
+        return products;
     }
 }

@@ -18,10 +18,10 @@
             android:name=".presentation.menu.MenuActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.perfil.PerfilActivity"
+            android:name=".presentation.profile.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.carrito.CarritoActivity"
+            android:name=".presentation.cart.CartActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.home.HomeActivity"

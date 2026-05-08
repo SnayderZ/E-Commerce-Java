@@ -2,7 +2,7 @@ package com.proyecto.e_commerce_java.data.remote.ServicesApiClient;
 
 import com.proyecto.e_commerce_java.data.remote.LoginApi.LoginRequest;
 import com.proyecto.e_commerce_java.data.remote.LoginApi.LoginResponse;
-import com.proyecto.e_commerce_java.data.remote.ProductApi.ProductosResponse;
+import com.proyecto.e_commerce_java.data.remote.ProductApi.ProductsResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -16,7 +16,7 @@ public interface ApiService {
     Call<LoginResponse> login(@Body LoginRequest request);
 
     @GET("products")
-    Call<ProductosResponse> getProductos(
+    Call<ProductsResponse> getProducts(
             @Header("Authorization") String token,
             @Query("pageNumber") int pageNumber,
             @Query("pageSize") int pageSize

@@ -4,21 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShoppingCart {
-    private final List<Producto> productos = new ArrayList<>();
+    private final List<Product> products = new ArrayList<>();
 
-    public void addProducto(Producto producto) {
-        productos.add(producto);
+    public void addProduct(Product product) {
+        products.add(product);
     }
 
-    public List<Producto> getProductos() {
-        return productos;
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public double calcularTotal() {
+    public double calculateTotal() {
         double total = 0;
 
-        for (Producto producto : productos) {
-            total += producto.getPrecio() * producto.getCantidad();
+        for (Product product : products) {
+            total += product.getPrice() * product.getStock();
         }
 
         return total;

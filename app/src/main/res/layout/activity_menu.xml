@@ -48,7 +48,7 @@
             android:layout_height="48dp"
             android:layout_marginTop="16dp"
             android:gravity="center_vertical"
-            android:text="@string/categorias_title"
+            android:text="@string/categories_title"
             android:textColor="@color/textColorPrimary"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -58,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:gravity="center_vertical"
-            android:text="@string/configuracion_title"
+            android:text="@string/settings_title"
             android:textColor="@color/textColorPrimary"
             android:textSize="16sp"
             android:textStyle="bold" />

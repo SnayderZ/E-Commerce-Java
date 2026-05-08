@@ -23,6 +23,6 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void showComingSoon() {
-        Toast.makeText(this, R.string.proximamente, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
     }
 }

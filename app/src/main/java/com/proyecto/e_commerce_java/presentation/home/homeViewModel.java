@@ -7,10 +7,10 @@ import androidx.lifecycle.ViewModel;
 import com.proyecto.e_commerce_java.data.remote.ServicesApiClient.ApiService;
 import com.proyecto.e_commerce_java.data.remote.ServicesApiClient.RetrofitClient;
 import com.proyecto.e_commerce_java.data.repositories.Product.ProductRepositoryImpl;
-import com.proyecto.e_commerce_java.domain.Entities.Producto;
-import com.proyecto.e_commerce_java.domain.UseCases.CarritoUseCase;
-import com.proyecto.e_commerce_java.domain.UseCases.ObtenerProductosUseCase;
-import com.proyecto.e_commerce_java.domain.repositories.ProductoRepository;
+import com.proyecto.e_commerce_java.domain.Entities.Product;
+import com.proyecto.e_commerce_java.domain.UseCases.CartUseCase;
+import com.proyecto.e_commerce_java.domain.UseCases.GetProductsUseCase;
+import com.proyecto.e_commerce_java.domain.repositories.ProductRepository;
 
 import java.util.List;
 
@@ -18,23 +18,23 @@ public class HomeViewModel extends ViewModel {
     private static final int DEFAULT_PAGE_NUMBER = 1;
     private static final int DEFAULT_PAGE_SIZE = 10;
 
-    private final CarritoUseCase carritoUseCase;
-    private final ObtenerProductosUseCase obtenerProductosUseCase;
-    private final MutableLiveData<List<Producto>> productosApiLiveData = new MutableLiveData<>();
+    private final CartUseCase cartUseCase;
+    private final GetProductsUseCase getProductsUseCase;
+    private final MutableLiveData<List<Product>> apiProductsLiveData = new MutableLiveData<>();
     private final MutableLiveData<String> errorLiveData = new MutableLiveData<>();
 
     public HomeViewModel() {
         ApiService apiService = RetrofitClient.getApiService();
-        ProductoRepository productoRepository = new ProductRepositoryImpl(apiService);
-        carritoUseCase = new CarritoUseCase(productoRepository);
-        obtenerProductosUseCase = new ObtenerProductosUseCase(productoRepository);
+        ProductRepository productRepository = new ProductRepositoryImpl(apiService);
+        cartUseCase = new CartUseCase(productRepository);
+        getProductsUseCase = new GetProductsUseCase(productRepository);
     }
 
-    public void cargarProductos(String token) {
-        obtenerProductosUseCase.execute(token, DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, new ProductoRepository.ProductosCallback() {
+    public void loadProducts(String token) {
+        getProductsUseCase.execute(token, DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, new ProductRepository.ProductsCallback() {
             @Override
-            public void onSuccess(List<Producto> productos) {
-                productosApiLiveData.setValue(productos);
+            public void onSuccess(List<Product> products) {
+                apiProductsLiveData.setValue(products);
             }
 
             @Override
@@ -44,12 +44,12 @@ public class HomeViewModel extends ViewModel {
         });
     }
 
-    public void agregarProducto(Producto producto) {
-        carritoUseCase.agregarProducto(producto);
+    public void addProduct(Product product) {
+        cartUseCase.addProduct(product);
     }
 
-    public LiveData<List<Producto>> getProductosApiLiveData() {
-        return productosApiLiveData;
+    public LiveData<List<Product>> getApiProductsLiveData() {
+        return apiProductsLiveData;
     }
 
     public LiveData<String> getErrorLiveData() {

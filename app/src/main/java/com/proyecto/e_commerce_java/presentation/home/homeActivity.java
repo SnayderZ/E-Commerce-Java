@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.proyecto.e_commerce_java.R;
-import com.proyecto.e_commerce_java.domain.Entities.Producto;
+import com.proyecto.e_commerce_java.domain.Entities.Product;
 import com.proyecto.e_commerce_java.presentation.navigation.BottomNavigationHelper;
 
 import java.util.ArrayList;
@@ -24,11 +24,11 @@ public class HomeActivity extends AppCompatActivity {
     private static final String KEY_TOKEN = "token";
 
     private HomeViewModel viewModel;
-    private TextView productosApiText;
-    private Button cargarProductosButton;
-    private Button agregarPrimerProductoButton;
+    private TextView apiProductsText;
+    private Button loadProductsButton;
+    private Button addFirstProductButton;
     private String token;
-    private List<Producto> productosApi = new ArrayList<>();
+    private List<Product> apiProducts = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,14 +42,14 @@ public class HomeActivity extends AppCompatActivity {
         configureBottomNavigation();
 
         if (savedInstanceState == null) {
-            cargarProductos();
+            loadProducts();
         }
     }
 
     private void bindViews() {
-        productosApiText = findViewById(R.id.productosApiText);
-        cargarProductosButton = findViewById(R.id.cargarProductosButton);
-        agregarPrimerProductoButton = findViewById(R.id.agregarPrimerProductoButton);
+        apiProductsText = findViewById(R.id.apiProductsText);
+        loadProductsButton = findViewById(R.id.loadProductsButton);
+        addFirstProductButton = findViewById(R.id.addFirstProductButton);
     }
 
     private String resolveToken() {
@@ -67,9 +67,9 @@ public class HomeActivity extends AppCompatActivity {
     private void configureViewModel() {
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
-        viewModel.getProductosApiLiveData().observe(this, productos -> {
-            productosApi = productos == null ? new ArrayList<>() : productos;
-            productosApiText.setText(formatProductos(productosApi));
+        viewModel.getApiProductsLiveData().observe(this, products -> {
+            apiProducts = products == null ? new ArrayList<>() : products;
+            apiProductsText.setText(formatProducts(apiProducts));
         });
 
         viewModel.getErrorLiveData().observe(this, error -> {
@@ -80,17 +80,17 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void configureActions() {
-        cargarProductosButton.setOnClickListener(view -> cargarProductos());
-        agregarPrimerProductoButton.setOnClickListener(view -> agregarPrimerProducto());
+        loadProductsButton.setOnClickListener(view -> loadProducts());
+        addFirstProductButton.setOnClickListener(view -> addFirstProduct());
     }
 
-    private void cargarProductos() {
+    private void loadProducts() {
         if (token == null || token.trim().isEmpty()) {
-            Toast.makeText(this, "No hay token de sesion para cargar productos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.no_session_token, Toast.LENGTH_SHORT).show();
             return;
         }
 
-        viewModel.cargarProductos(token);
+        viewModel.loadProducts(token);
     }
 
     private void configureBottomNavigation() {
@@ -98,32 +98,36 @@ public class HomeActivity extends AppCompatActivity {
         BottomNavigationHelper.setup(this, bottomNavigation, R.id.nav_home);
     }
 
-    private void agregarPrimerProducto() {
-        if (productosApi.isEmpty()) {
-            Toast.makeText(this, "Primero cargue productos desde la API", Toast.LENGTH_SHORT).show();
+    private void addFirstProduct() {
+        if (apiProducts.isEmpty()) {
+            Toast.makeText(this, R.string.load_products_first, Toast.LENGTH_SHORT).show();
             return;
         }
 
-        viewModel.agregarProducto(productosApi.get(0));
-        Toast.makeText(this, "Producto agregado al carrito", Toast.LENGTH_SHORT).show();
+        viewModel.addProduct(apiProducts.get(0));
+        Toast.makeText(this, R.string.product_added_to_cart, Toast.LENGTH_SHORT).show();
     }
 
-    private String formatProductos(List<Producto> productos) {
-        if (productos == null || productos.isEmpty()) {
-            return getString(R.string.sin_productos);
+    private String formatProducts(List<Product> products) {
+        if (products == null || products.isEmpty()) {
+            return getString(R.string.no_products);
         }
 
         StringBuilder builder = new StringBuilder();
-        for (Producto producto : productos) {
-            double subtotal = producto.getPrecio() * producto.getCantidad();
-            builder.append(producto.getNombre())
+        for (Product product : products) {
+            double subtotal = product.getPrice() * product.getStock();
+            builder.append(product.getName())
                     .append("\n")
-                    .append("Cantidad: ")
-                    .append(producto.getCantidad())
-                    .append("   Precio: $")
-                    .append(String.format(Locale.US, "%.2f", producto.getPrecio()))
+                    .append(getString(R.string.stock_label))
+                    .append(": ")
+                    .append(product.getStock())
+                    .append("   ")
+                    .append(getString(R.string.price_label))
+                    .append(": $")
+                    .append(String.format(Locale.US, "%.2f", product.getPrice()))
                     .append("\n")
-                    .append("Subtotal: $")
+                    .append(getString(R.string.subtotal_label))
+                    .append(": $")
                     .append(String.format(Locale.US, "%.2f", subtotal))
                     .append("\n\n");
         }

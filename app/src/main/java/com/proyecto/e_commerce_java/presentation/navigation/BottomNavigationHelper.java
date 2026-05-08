@@ -5,10 +5,10 @@ import android.content.Intent;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.proyecto.e_commerce_java.R;
-import com.proyecto.e_commerce_java.presentation.carrito.CarritoActivity;
+import com.proyecto.e_commerce_java.presentation.cart.CartActivity;
 import com.proyecto.e_commerce_java.presentation.home.HomeActivity;
 import com.proyecto.e_commerce_java.presentation.menu.MenuActivity;
-import com.proyecto.e_commerce_java.presentation.perfil.PerfilActivity;
+import com.proyecto.e_commerce_java.presentation.profile.ProfileActivity;
 
 public final class BottomNavigationHelper {
     private BottomNavigationHelper() {
@@ -39,10 +39,10 @@ public final class BottomNavigationHelper {
             return HomeActivity.class;
         }
         if (itemId == R.id.nav_cart) {
-            return CarritoActivity.class;
+            return CartActivity.class;
         }
         if (itemId == R.id.nav_account) {
-            return PerfilActivity.class;
+            return ProfileActivity.class;
         }
         if (itemId == R.id.nav_menu) {
             return MenuActivity.class;

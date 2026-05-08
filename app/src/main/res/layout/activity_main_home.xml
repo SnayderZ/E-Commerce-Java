@@ -22,10 +22,10 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/carritoTitle"
+            android:id="@+id/cartTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/carrito_title"
+            android:text="@string/home_title"
             android:textColor="@color/surfaceColor"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -39,7 +39,7 @@
             android:gravity="center_vertical"
             android:paddingStart="14dp"
             android:paddingEnd="14dp"
-            android:text="@string/buscar_hint"
+            android:text="@string/search_hint"
             android:textColor="@color/textColorSecondary"
             android:textSize="14sp" />
 
@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/entrega_text"
+            android:text="@string/delivery_text"
             android:textColor="@color/surfaceColor"
             android:textSize="13sp" />
     </LinearLayout>
@@ -78,7 +78,7 @@
                 android:gravity="center"
                 android:paddingStart="14dp"
                 android:paddingEnd="14dp"
-                android:text="@string/ofertas_flash"
+                android:text="@string/flash_offers"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
 
@@ -90,7 +90,7 @@
                 android:gravity="center"
                 android:paddingStart="14dp"
                 android:paddingEnd="14dp"
-                android:text="@string/envio_gratis"
+                android:text="@string/free_shipping"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
 
@@ -102,7 +102,7 @@
                 android:gravity="center"
                 android:paddingStart="14dp"
                 android:paddingEnd="14dp"
-                android:text="@string/mas_vendidos"
+                android:text="@string/best_sellers"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -126,11 +126,11 @@
             android:padding="14dp">
 
             <Button
-                android:id="@+id/cargarProductosButton"
+                android:id="@+id/loadProductsButton"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:backgroundTint="@color/colorPrimary"
-                android:text="@string/cargar_productos"
+                android:text="@string/load_products"
                 android:textColor="@color/surfaceColor"
                 android:textStyle="bold" />
 
@@ -143,10 +143,10 @@
                 android:padding="14dp">
 
                 <TextView
-                    android:id="@+id/productosApiLabel"
+                    android:id="@+id/apiProductsLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/productos_api"
+                    android:text="@string/api_products"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -158,27 +158,27 @@
                     android:layout_marginTop="12dp"
                     android:background="@drawable/bg_product_placeholder"
                     android:gravity="center"
-                    android:text="@string/ofertas_flash"
+                    android:text="@string/flash_offers"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/productosApiText"
+                    android:id="@+id/apiProductsText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="@string/sin_productos"
+                    android:text="@string/no_products"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="15sp" />
 
                 <Button
-                    android:id="@+id/agregarPrimerProductoButton"
+                    android:id="@+id/addFirstProductButton"
                     android:layout_width="match_parent"
                     android:layout_height="46dp"
                     android:layout_marginTop="12dp"
                     android:backgroundTint="@color/colorAccent"
-                    android:text="@string/agregar_primer_producto"
+                    android:text="@string/add_first_product_to_cart"
                     android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold" />
             </LinearLayout>
