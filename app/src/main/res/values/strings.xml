@@ -30,17 +30,56 @@
     <string name="price_label">Precio</string>
     <string name="subtotal_label">Subtotal</string>
 
+    <!-- Home / Catalog -->
+    <string name="search_products_hint">Buscar productos</string>
+    <string name="filter_by_name">Nombre</string>
+    <string name="filter_by_price">Precio</string>
+    <string name="products_title">Productos</string>
+    <string name="add_to_cart">Agregar al carrito</string>
+    <string name="stock_format">Stock: %1$d</string>
+    <string name="price_format">$%1$.2f</string>
+    <string name="product_added">Producto agregado al carrito</string>
+    <string name="no_products_found">No se encontraron productos</string>
+
     <!-- Cart -->
     <string name="cart_title">MarketJava</string>
     <string name="cart_products">Productos en carrito</string>
     <string name="checkout">Comprar</string>
     <string name="total_default">Total: $0.00</string>
     <string name="total_format">Total: $%.2f</string>
+    <string name="remove">Eliminar</string>
+    <string name="quantity">Cantidad</string>
+
+    <!-- CartOptions -->
+    <string name="product_on_cart">Producto agregado</string>
 
     <!-- Profile -->
     <string name="account_title">Mi cuenta</string>
     <string name="account_description">Sesion activa. Desde aqui podras revisar tus datos y pedidos.</string>
     <string name="logout">Cerrar sesion</string>
+    <!-- Profile -->
+    <string name="profile_title">Mi perfil</string>
+    <string name="first_name">Nombre</string>
+    <string name="last_name">Apellido</string>
+    <string name="email">Correo electronico</string>
+    <string name="password">Contrasena</string>
+    <string name="profile_photo">Foto de perfil</string>
+    <string name="recent_purchases">Compras recientes</string>
+    <string name="all_purchases">Ver todas mis compras</string>
+    <string name="settings">Configuraciones</string>
+    <string name="dark_mode">Modo oscuro</string>
+
+    <!-- Payment -->
+    <string name="payment_title">Metodo de pago</string>
+    <string name="card">Tarjeta</string>
+    <string name="paypal">PayPal</string>
+    <string name="card_number">Numero de tarjeta</string>
+    <string name="card_holder">Nombre del titular</string>
+    <string name="expiration_date">Fecha de expiracion</string>
+    <string name="cvv">CVV</string>
+    <string name="paypal_email">Correo de PayPal</string>
+    <string name="confirm_payment">Confirmar pago</string>
+
 
     <!-- Menu -->
     <string name="menu_title">Menu</string>

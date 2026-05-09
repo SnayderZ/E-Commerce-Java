@@ -3,33 +3,73 @@ package com.proyecto.e_commerce_java.data.repositories.Product;
 import com.proyecto.e_commerce_java.data.remote.ProductApi.ProductDto;
 import com.proyecto.e_commerce_java.data.remote.ProductApi.ProductsResponse;
 import com.proyecto.e_commerce_java.data.remote.ServicesApiClient.ApiService;
+import com.proyecto.e_commerce_java.domain.Entities.CartItem;
 import com.proyecto.e_commerce_java.domain.Entities.Product;
 import com.proyecto.e_commerce_java.domain.repositories.ProductRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProductRepositoryImpl implements ProductRepository {
-    private static final List<Product> cart = new ArrayList<>();
+    private static final List<CartItem> cartItems = new ArrayList<>();
 
     private final ApiService apiService;
+
 
     public ProductRepositoryImpl(ApiService apiService) {
         this.apiService = apiService;
     }
 
     @Override
-    public List<Product> getCartProducts() {
-        return cart;
+    public List<CartItem> getCartItems(){
+        return cartItems;
     }
 
     @Override
     public void addProduct(Product product) {
-        cart.add(product);
+
+        for(CartItem item : cartItems){
+            if (item.getProduct().getId() == product.getId()){
+                item.increaseQuantity();
+                return;
+            }
+        }
+        cartItems.add(new CartItem(product,1));
+    }
+
+    @Override
+    public void increaseCartItemQuantity(int productId) {
+        for (CartItem item : cartItems){
+            if(item.getProduct().getId() == productId){
+                item.increaseQuantity();
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void decreaseCartItemQuantity(int productId) {
+        for (CartItem item : cartItems){
+            if (item.getProduct().getId() == productId){
+                item.decreaseQuantity();
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void removeCartItem(int productId) {
+        for(int index = 0; index < cartItems.size(); index++){
+            if(cartItems.get(index).getProduct().getId() == productId){
+                cartItems.remove(index);
+                return;
+            }
+        }
     }
 
     @Override
@@ -57,7 +97,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         }
 
         String cleanToken = token.trim();
-        if (cleanToken.toLowerCase().startsWith("bearer ")) {
+        if (cleanToken.toLowerCase(Locale.ROOT).startsWith("bearer ")) {
             return cleanToken;
         }
 

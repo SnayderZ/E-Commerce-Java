@@ -1,5 +1,6 @@
 package com.proyecto.e_commerce_java.domain.UseCases;
 
+import com.proyecto.e_commerce_java.domain.Entities.CartItem;
 import com.proyecto.e_commerce_java.domain.Entities.Product;
 import com.proyecto.e_commerce_java.domain.repositories.ProductRepository;
 
@@ -16,15 +17,25 @@ public class CartUseCase {
         productRepository.addProduct(product);
     }
 
-    public List<Product> getCartProducts() {
-        return productRepository.getCartProducts();
+    public List<CartItem> getCartItems(){
+
+        return productRepository.getCartItems();
+    }
+    public void increaseQuantity(int productId){
+        productRepository.increaseCartItemQuantity(productId);
+    }
+    public void decreaseQuantity(int productId){
+        productRepository.decreaseCartItemQuantity(productId);
+    }
+    public void removeItem(int productId){
+        productRepository.removeCartItem(productId);
     }
 
     public double calculateTotal() {
         double total = 0;
 
-        for (Product product : productRepository.getCartProducts()) {
-            total += product.getPrice() * product.getStock();
+        for (CartItem item : productRepository.getCartItems()) {
+            total += item.getSubTotal();
         }
 
         return total;

@@ -5,18 +5,19 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.proyecto.e_commerce_java.R;
-import com.proyecto.e_commerce_java.domain.Entities.Product;
 import com.proyecto.e_commerce_java.presentation.navigation.BottomNavigationHelper;
 
-import java.util.List;
 import java.util.Locale;
 
 public class CartActivity extends AppCompatActivity {
     private CartViewModel viewModel;
-    private TextView cartText;
+    private CartAdapter cartAdapter;
+    private RecyclerView cartRecyclerView;
     private TextView totalText;
 
     @Override
@@ -24,14 +25,12 @@ public class CartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        cartText = findViewById(R.id.cartText);
+        cartRecyclerView = findViewById(R.id.cartRecyclerView);
         totalText = findViewById(R.id.totalText);
         viewModel = new ViewModelProvider(this).get(CartViewModel.class);
 
-        viewModel.getCartLiveData().observe(this, products ->
-                cartText.setText(formatProducts(products)));
-        viewModel.getTotalLiveData().observe(this, total ->
-                totalText.setText(String.format(Locale.US, getString(R.string.total_format), total)));
+        configureCartList();
+        configureViewModel();
 
         BottomNavigationView bottomNavigation = findViewById(R.id.bottomNavigation);
         BottomNavigationHelper.setup(this, bottomNavigation, R.id.nav_cart);
@@ -43,30 +42,33 @@ public class CartActivity extends AppCompatActivity {
         viewModel.loadCart();
     }
 
-    private String formatProducts(List<Product> products) {
-        if (products == null || products.isEmpty()) {
-            return getString(R.string.no_products);
-        }
+    private void configureCartList() {
+        cartAdapter = new CartAdapter(new CartAdapter.OnCartActionListener() {
+            @Override
+            public void onIncrease(com.proyecto.e_commerce_java.domain.Entities.CartItem item) {
+                viewModel.increaseQuantity(item);
+            }
 
-        StringBuilder builder = new StringBuilder();
-        for (Product product : products) {
-            double subtotal = product.getPrice() * product.getStock();
-            builder.append(product.getName())
-                    .append("\n")
-                    .append(getString(R.string.stock_label))
-                    .append(": ")
-                    .append(product.getStock())
-                    .append("   ")
-                    .append(getString(R.string.price_label))
-                    .append(": $")
-                    .append(String.format(Locale.US, "%.2f", product.getPrice()))
-                    .append("\n")
-                    .append(getString(R.string.subtotal_label))
-                    .append(": $")
-                    .append(String.format(Locale.US, "%.2f", subtotal))
-                    .append("\n\n");
-        }
+            @Override
+            public void onDecrease(com.proyecto.e_commerce_java.domain.Entities.CartItem item) {
+                viewModel.decreaseQuantity(item);
+            }
 
-        return builder.toString().trim();
+            @Override
+            public void onRemove(com.proyecto.e_commerce_java.domain.Entities.CartItem item) {
+                viewModel.removeItem(item);
+            }
+        });
+
+        cartRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        cartRecyclerView.setAdapter(cartAdapter);
+    }
+
+    private void configureViewModel() {
+        viewModel.getCartLiveData().observe(this, cartItems ->
+                cartAdapter.submitList(cartItems));
+
+        viewModel.getTotalLiveData().observe(this, total ->
+                totalText.setText(String.format(Locale.US, getString(R.string.total_format), total)));
     }
 }

@@ -20,7 +20,7 @@ public class HomeViewModel extends ViewModel {
 
     private final CartUseCase cartUseCase;
     private final GetProductsUseCase getProductsUseCase;
-    private final MutableLiveData<List<Product>> apiProductsLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<Product>> productsLiveData = new MutableLiveData<>();
     private final MutableLiveData<String> errorLiveData = new MutableLiveData<>();
 
     public HomeViewModel() {
@@ -34,7 +34,7 @@ public class HomeViewModel extends ViewModel {
         getProductsUseCase.execute(token, DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, new ProductRepository.ProductsCallback() {
             @Override
             public void onSuccess(List<Product> products) {
-                apiProductsLiveData.setValue(products);
+                productsLiveData.setValue(products);
             }
 
             @Override
@@ -48,8 +48,8 @@ public class HomeViewModel extends ViewModel {
         cartUseCase.addProduct(product);
     }
 
-    public LiveData<List<Product>> getApiProductsLiveData() {
-        return apiProductsLiveData;
+    public LiveData<List<Product>> getProductsLiveData() {
+        return productsLiveData;
     }
 
     public LiveData<String> getErrorLiveData() {

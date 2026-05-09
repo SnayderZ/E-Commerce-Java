@@ -2,12 +2,16 @@ package com.proyecto.e_commerce_java.presentation.home;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.TextView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.proyecto.e_commerce_java.R;
@@ -24,11 +28,13 @@ public class HomeActivity extends AppCompatActivity {
     private static final String KEY_TOKEN = "token";
 
     private HomeViewModel viewModel;
-    private TextView apiProductsText;
-    private Button loadProductsButton;
-    private Button addFirstProductButton;
+    private EditText searchInput;
+    private CheckBox nameFilterCheck;
+    private CheckBox priceFilterCheck;
+    private RecyclerView productsRecyclerView;
+    private ProductAdapter productAdapter;
     private String token;
-    private List<Product> apiProducts = new ArrayList<>();
+    private List<Product> allProducts = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +43,9 @@ public class HomeActivity extends AppCompatActivity {
         token = resolveToken();
 
         bindViews();
+        configureProductsList();
         configureViewModel();
-        configureActions();
+        configureSearch();
         configureBottomNavigation();
 
         if (savedInstanceState == null) {
@@ -47,9 +54,10 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void bindViews() {
-        apiProductsText = findViewById(R.id.apiProductsText);
-        loadProductsButton = findViewById(R.id.loadProductsButton);
-        addFirstProductButton = findViewById(R.id.addFirstProductButton);
+        searchInput = findViewById(R.id.searchInput);
+        nameFilterCheck = findViewById(R.id.nameFilterCheck);
+        priceFilterCheck = findViewById(R.id.priceFilterCheck);
+        productsRecyclerView = findViewById(R.id.productsRecyclerView);
     }
 
     private String resolveToken() {
@@ -64,12 +72,22 @@ public class HomeActivity extends AppCompatActivity {
         return preferences.getString(KEY_TOKEN, "");
     }
 
+    private void configureProductsList() {
+        productAdapter = new ProductAdapter(product -> {
+            viewModel.addProduct(product);
+            Toast.makeText(this, R.string.product_added, Toast.LENGTH_SHORT).show();
+        });
+
+        productsRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        productsRecyclerView.setAdapter(productAdapter);
+    }
+
     private void configureViewModel() {
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
-        viewModel.getApiProductsLiveData().observe(this, products -> {
-            apiProducts = products == null ? new ArrayList<>() : products;
-            apiProductsText.setText(formatProducts(apiProducts));
+        viewModel.getProductsLiveData().observe(this, products -> {
+            allProducts = products == null ? new ArrayList<>() : products;
+            filterProducts();
         });
 
         viewModel.getErrorLiveData().observe(this, error -> {
@@ -79,9 +97,60 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    private void configureActions() {
-        loadProductsButton.setOnClickListener(view -> loadProducts());
-        addFirstProductButton.setOnClickListener(view -> addFirstProduct());
+    private void configureSearch() {
+        searchInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence text, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence text, int start, int before, int count) {
+                filterProducts();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+
+        nameFilterCheck.setOnCheckedChangeListener((buttonView, isChecked) -> filterProducts());
+        priceFilterCheck.setOnCheckedChangeListener((buttonView, isChecked) -> filterProducts());
+    }
+
+    private void filterProducts() {
+        String query = searchInput.getText().toString().trim().toLowerCase(Locale.ROOT);
+        boolean filterByName = nameFilterCheck.isChecked();
+        boolean filterByPrice = priceFilterCheck.isChecked();
+
+        if (query.isEmpty()) {
+            productAdapter.submitList(allProducts);
+            return;
+        }
+
+        List<Product> filteredProducts = new ArrayList<>();
+
+        for (Product product : allProducts) {
+            boolean matches = false;
+
+            if (filterByName) {
+                matches = product.getName().toLowerCase(Locale.ROOT).contains(query);
+            }
+
+            if (filterByPrice) {
+                String priceText = String.format(Locale.US, "%.2f", product.getPrice());
+                matches = matches || priceText.contains(query);
+            }
+
+            if (!filterByName && !filterByPrice) {
+                matches = product.getName().toLowerCase(Locale.ROOT).contains(query);
+            }
+
+            if (matches) {
+                filteredProducts.add(product);
+            }
+        }
+
+        productAdapter.submitList(filteredProducts);
     }
 
     private void loadProducts() {
@@ -96,42 +165,5 @@ public class HomeActivity extends AppCompatActivity {
     private void configureBottomNavigation() {
         BottomNavigationView bottomNavigation = findViewById(R.id.bottomNavigation);
         BottomNavigationHelper.setup(this, bottomNavigation, R.id.nav_home);
-    }
-
-    private void addFirstProduct() {
-        if (apiProducts.isEmpty()) {
-            Toast.makeText(this, R.string.load_products_first, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        viewModel.addProduct(apiProducts.get(0));
-        Toast.makeText(this, R.string.product_added_to_cart, Toast.LENGTH_SHORT).show();
-    }
-
-    private String formatProducts(List<Product> products) {
-        if (products == null || products.isEmpty()) {
-            return getString(R.string.no_products);
-        }
-
-        StringBuilder builder = new StringBuilder();
-        for (Product product : products) {
-            double subtotal = product.getPrice() * product.getStock();
-            builder.append(product.getName())
-                    .append("\n")
-                    .append(getString(R.string.stock_label))
-                    .append(": ")
-                    .append(product.getStock())
-                    .append("   ")
-                    .append(getString(R.string.price_label))
-                    .append(": $")
-                    .append(String.format(Locale.US, "%.2f", product.getPrice()))
-                    .append("\n")
-                    .append(getString(R.string.subtotal_label))
-                    .append(": $")
-                    .append(String.format(Locale.US, "%.2f", subtotal))
-                    .append("\n\n");
-        }
-
-        return builder.toString().trim();
     }
 }

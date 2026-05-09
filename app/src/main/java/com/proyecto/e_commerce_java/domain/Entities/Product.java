@@ -24,7 +24,7 @@ public class Product {
     }
 
     public String getName() {
-        return name;
+        return name == null ? "": name;
     }
 
     public double getPrice() {
