@@ -44,25 +44,35 @@
 
         <TextView
             android:id="@+id/categoriesOption"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="16dp"
-            android:gravity="center_vertical"
-            android:text="@string/categories_title"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            style="@style/MenuOptionText"
+            android:text="@string/categories_title" />
 
         <TextView
-            android:id="@+id/settingsOption"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:gravity="center_vertical"
-            android:text="@string/settings_title"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:id="@+id/offersOption"
+            style="@style/MenuOptionText"
+            android:text="@string/offers" />
+
+        <TextView
+            android:id="@+id/favoritesOption"
+            style="@style/MenuOptionText"
+            android:text="@string/favorites" />
+
+        <TextView
+            android:id="@+id/addressesOption"
+            style="@style/MenuOptionText"
+            android:text="@string/addresses" />
+
+        <TextView
+            android:id="@+id/couponsOption"
+            style="@style/MenuOptionText"
+            android:text="@string/coupons" />
+
+        <TextView
+            android:id="@+id/supportOption"
+            style="@style/MenuOptionText"
+            android:text="@string/support" />
     </LinearLayout>
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"

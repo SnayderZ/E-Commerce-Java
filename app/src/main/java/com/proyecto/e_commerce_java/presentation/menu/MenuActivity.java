@@ -15,11 +15,19 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        findViewById(R.id.categoriesOption).setOnClickListener(view -> showComingSoon());
-        findViewById(R.id.settingsOption).setOnClickListener(view -> showComingSoon());
+        setupMenuActions();
 
         BottomNavigationView bottomNavigation = findViewById(R.id.bottomNavigation);
         BottomNavigationHelper.setup(this, bottomNavigation, R.id.nav_menu);
+    }
+
+    private void setupMenuActions() {
+        findViewById(R.id.categoriesOption).setOnClickListener(view -> showComingSoon());
+        findViewById(R.id.offersOption).setOnClickListener(view -> showComingSoon());
+        findViewById(R.id.favoritesOption).setOnClickListener(view -> showComingSoon());
+        findViewById(R.id.addressesOption).setOnClickListener(view -> showComingSoon());
+        findViewById(R.id.couponsOption).setOnClickListener(view -> showComingSoon());
+        findViewById(R.id.supportOption).setOnClickListener(view -> showComingSoon());
     }
 
     private void showComingSoon() {

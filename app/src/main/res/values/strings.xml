@@ -11,6 +11,7 @@
     <string name="password_error">La contrasena no puede estar vacia.</string>
     <string name="login_subtitle">Compra tecnologia, moda y hogar desde tu movil</string>
     <string name="secure_continue">Continuar de forma segura</string>
+    <string name="login_required_fields">Ingrese email y contrasena</string>
 
     <!-- Home / Products -->
     <string name="home_title">MarketJava</string>
@@ -93,4 +94,35 @@
     <string name="account">Cuenta</string>
     <string name="cart">Carrito</string>
     <string name="menu">Menu</string>
+
+    <!-- Profile / Account -->
+    <string name="save_changes">Guardar cambios</string>
+    <string name="profile_photo_short">Foto</string>
+    <string name="profile_saved_placeholder">Datos guardados localmente por ahora</string>
+    <string name="recent_purchases_placeholder">Compras recientes proximamente</string>
+    <string name="purchase_history_placeholder">Historial de compras proximamente</string>
+
+    <!-- Menu -->
+    <string name="offers">Ofertas</string>
+    <string name="favorites">Favoritos</string>
+    <string name="addresses">Direcciones</string>
+    <string name="coupons">Cupones</string>
+    <string name="support">Soporte</string>
+
+    <!-- Register -->
+    <string name="create_account_prompt">No tienes una cuenta aun? Crear cuenta</string>
+    <string name="register_title">Crear cuenta</string>
+    <string name="register_subtitle">Completa tus datos para empezar a comprar.</string>
+    <string name="confirm_password">Verificar contrasena</string>
+    <string name="choose_profile_photo">Agregar foto de perfil</string>
+    <string name="skip_for_now">Omitir por ahora</string>
+    <string name="create_account">Crear cuenta</string>
+    <string name="account_data_loaded">Datos cargados</string>
+    <string name="profile_photo_question">Quieres agregar una foto de perfil?</string>
+    <string name="profile_photo_placeholder">Selector de imagen pendiente de implementar</string>
+    <string name="profile_photo_skipped">Podras agregar una foto despues</string>
+    <string name="complete_required_fields">Completa todos los campos requeridos</string>
+    <string name="passwords_do_not_match">Las contrasenas no coinciden</string>
+    <string name="register_placeholder_success">Cuenta lista para conectar con la API</string>
+
 </resources>

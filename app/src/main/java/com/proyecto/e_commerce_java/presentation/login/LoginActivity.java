@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.textfield.TextInputEditText;
 import com.proyecto.e_commerce_java.R;
 import com.proyecto.e_commerce_java.presentation.home.HomeActivity;
+import com.proyecto.e_commerce_java.presentation.register.RegisterActivity;
 
 public class LoginActivity extends AppCompatActivity {
     private LoginViewModel viewModel;
@@ -26,6 +28,10 @@ public class LoginActivity extends AppCompatActivity {
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
         loginButton = findViewById(R.id.loginButton);
+        TextView createAccountText = findViewById(R.id.createAccountText);
+        createAccountText.setOnClickListener(view ->
+                startActivity(new Intent(this, RegisterActivity.class)));
+
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
         loginButton.setOnClickListener(view -> {
@@ -33,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
             String password = getInputText(passwordInput);
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Ingrese email y contrasena", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.login_required_fields, Toast.LENGTH_SHORT).show();
                 return;
             }
 

@@ -120,6 +120,15 @@
             android:text="@string/login_button_text"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
+        <TextView
+            android:id="@+id/createAccountText"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:text="@string/create_account_prompt"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
