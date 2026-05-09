@@ -16,7 +16,7 @@ import java.util.List;
 
 public class HomeViewModel extends ViewModel {
     private static final int DEFAULT_PAGE_NUMBER = 1;
-    private static final int DEFAULT_PAGE_SIZE = 10;
+    private static final int DEFAULT_PAGE_SIZE = 50;
 
     private final CartUseCase cartUseCase;
     private final GetProductsUseCase getProductsUseCase;
@@ -32,6 +32,20 @@ public class HomeViewModel extends ViewModel {
 
     public void loadProducts(String token) {
         getProductsUseCase.execute(token, DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, new ProductRepository.ProductsCallback() {
+            @Override
+            public void onSuccess(List<Product> products) {
+                productsLiveData.setValue(products);
+            }
+
+            @Override
+            public void onError(String error) {
+                errorLiveData.setValue(error);
+            }
+        });
+    }
+
+    public void searchProducts(String token, String search) {
+        getProductsUseCase.execute(token, DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, search, new ProductRepository.ProductsCallback() {
             @Override
             public void onSuccess(List<Product> products) {
                 productsLiveData.setValue(products);

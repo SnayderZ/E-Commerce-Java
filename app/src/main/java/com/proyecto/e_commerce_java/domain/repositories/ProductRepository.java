@@ -12,7 +12,21 @@ public interface ProductRepository {
     void increaseCartItemQuantity(int productId);
     void decreaseCartItemQuantity(int productId);
     void removeCartItem(int productId);
-    void fetchProducts(String token, int pageNumber, int pageSize, ProductsCallback callback);
+
+    void fetchProducts(
+            String token,
+            int pageNumber,
+            int pageSize,
+            ProductsCallback callback
+    );
+
+    void fetchProducts(
+            String token,
+            int pageNumber,
+            int pageSize,
+            String search,
+            ProductsCallback callback
+    );
 
     interface ProductsCallback {
         void onSuccess(List<Product> products);

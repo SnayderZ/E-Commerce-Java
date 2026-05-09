@@ -43,22 +43,35 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/profilePhotoImage"
+                    android:layout_width="86dp"
+                    android:layout_height="86dp"
                     android:background="@drawable/bg_product_placeholder"
-                    android:gravity="center"
-                    android:text="@string/profile_photo_short"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textStyle="bold" />
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_launcher_background"
+                    app:shapeAppearanceOverlay="@style/CircleImageView" />
+
+                <Button
+                    android:id="@+id/editProfilePhotoButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/surfaceColor"
+                    android:text="@string/edit_profile_photo"
+                    android:textColor="@color/textColorPrimary"
+                    android:visibility="gone" />
 
                 <EditText
                     android:id="@+id/firstNameInput"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginTop="14dp"
+                    android:autofillHints="givenName"
                     android:background="@drawable/bg_search_box"
+                    android:enabled="false"
                     android:hint="@string/first_name"
+                    android:inputType="textPersonName|textCapWords"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp" />
 
@@ -67,8 +80,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginTop="10dp"
+                    android:autofillHints="familyName"
                     android:background="@drawable/bg_search_box"
+                    android:enabled="false"
                     android:hint="@string/last_name"
+                    android:inputType="textPersonName|textCapWords"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp" />
 
@@ -78,6 +94,8 @@
                     android:layout_height="48dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/bg_search_box"
+                    android:enabled="false"
+                    android:autofillHints="emailAddress"
                     android:hint="@string/email"
                     android:inputType="textEmailAddress"
                     android:paddingStart="14dp"
@@ -89,10 +107,22 @@
                     android:layout_height="48dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/bg_search_box"
+                    android:enabled="false"
+                    android:autofillHints="password"
                     android:hint="@string/password"
                     android:inputType="textPassword"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp" />
+
+                <Button
+                    android:id="@+id/editProfileButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="14dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:text="@string/edit_profile"
+                    android:textColor="@color/surfaceColor"
+                    android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/saveProfileButton"
@@ -102,7 +132,18 @@
                     android:backgroundTint="@color/colorPrimary"
                     android:text="@string/save_changes"
                     android:textColor="@color/surfaceColor"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/cancelEditProfileButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/surfaceColor"
+                    android:text="@string/cancel"
+                    android:textColor="@color/textColorPrimary"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <Button
@@ -141,7 +182,7 @@
                     android:textColor="@color/textColorPrimary"
                     android:textStyle="bold" />
 
-                <Switch
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/darkModeSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

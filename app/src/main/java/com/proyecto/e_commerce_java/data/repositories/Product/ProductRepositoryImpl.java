@@ -74,22 +74,29 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public void fetchProducts(String token, int pageNumber, int pageSize, ProductsCallback callback) {
-        apiService.getProducts(formatBearerToken(token), pageNumber, pageSize).enqueue(new Callback<ProductsResponse>() {
-            @Override
-            public void onResponse(Call<ProductsResponse> call, Response<ProductsResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    callback.onSuccess(mapProducts(response.body()));
-                } else {
-                    callback.onError("Error " + response.code() + ": " + response.message());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ProductsResponse> call, Throwable throwable) {
-                callback.onError(throwable.getMessage());
-            }
-        });
+        fetchProducts(token, pageNumber, pageSize, null, callback);
     }
+
+    @Override
+    public void fetchProducts(String token, int pageNumber, int pageSize, String search, ProductsCallback callback) {
+        apiService.getProducts(formatBearerToken(token), pageNumber, pageSize, search)
+                .enqueue(new Callback<ProductsResponse>() {
+                    @Override
+                    public void onResponse(Call<ProductsResponse> call, Response<ProductsResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            callback.onSuccess(mapProducts(response.body()));
+                        } else {
+                            callback.onError("Error " + response.code() + ": " + response.message());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ProductsResponse> call, Throwable throwable) {
+                        callback.onError(throwable.getMessage());
+                    }
+                });
+    }
+
 
     private String formatBearerToken(String token) {
         if (token == null || token.trim().isEmpty()) {

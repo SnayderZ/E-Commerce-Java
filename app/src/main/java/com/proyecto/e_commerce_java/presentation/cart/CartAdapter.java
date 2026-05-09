@@ -1,14 +1,20 @@
 package com.proyecto.e_commerce_java.presentation.cart;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.proyecto.e_commerce_java.R;
 import com.proyecto.e_commerce_java.domain.Entities.CartItem;
 
@@ -48,6 +54,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 .inflate(R.layout.item_cart, parent, false);
 
         return new CartViewHolder(view);
+
+
     }
 
     @Override
@@ -67,9 +75,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         private final Button increaseQuantityButton;
         private final Button decreaseQuantityButton;
         private final Button removeButton;
+        private final ImageView cartProductImage;
 
         CartViewHolder(@NonNull View itemView) {
             super(itemView);
+            cartProductImage = itemView.findViewById(R.id.cartProductImage);
             cartProductNameText = itemView.findViewById(R.id.cartProductNameText);
             cartProductPriceText = itemView.findViewById(R.id.cartProductPriceText);
             quantityText = itemView.findViewById(R.id.quantityText);
@@ -88,6 +98,32 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             increaseQuantityButton.setOnClickListener(view -> listener.onIncrease(item));
             decreaseQuantityButton.setOnClickListener(view -> listener.onDecrease(item));
             removeButton.setOnClickListener(view -> listener.onRemove(item));
+            loadProductImage(itemView.getContext(), item.getProduct().getImage(), cartProductImage);
+
         }
+        private void loadProductImage(Context context, String imageText, ImageView imageView) {
+            if (imageText == null || imageText.trim().isEmpty()) {
+                imageView.setImageResource(R.drawable.ic_launcher_background);
+                return;
+            }
+
+            if (imageText.startsWith("http")) {
+                Glide.with(context)
+                        .load(imageText)
+                        .centerCrop()
+                        .placeholder(R.drawable.bg_product_placeholder)
+                        .into(imageView);
+                return;
+            }
+
+            try {
+                byte[] imageBytes = Base64.decode(imageText, Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                imageView.setImageBitmap(bitmap);
+            } catch (Exception exception) {
+                imageView.setImageResource(R.drawable.ic_launcher_background);
+            }
+        }
+
     }
 }

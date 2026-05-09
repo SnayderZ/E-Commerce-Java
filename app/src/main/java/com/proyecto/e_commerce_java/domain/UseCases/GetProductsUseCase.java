@@ -9,7 +9,22 @@ public class GetProductsUseCase {
         this.productRepository = productRepository;
     }
 
-    public void execute(String token, int pageNumber, int pageSize, ProductRepository.ProductsCallback callback) {
+    public void execute(
+            String token,
+            int pageNumber,
+            int pageSize,
+            ProductRepository.ProductsCallback callback
+    ) {
         productRepository.fetchProducts(token, pageNumber, pageSize, callback);
+    }
+
+    public void execute(
+            String token,
+            int pageNumber,
+            int pageSize,
+            String search,
+            ProductRepository.ProductsCallback callback
+    ) {
+        productRepository.fetchProducts(token, pageNumber, pageSize, search, callback);
     }
 }

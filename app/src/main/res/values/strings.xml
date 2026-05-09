@@ -50,6 +50,8 @@
     <string name="total_format">Total: $%.2f</string>
     <string name="remove">Eliminar</string>
     <string name="quantity">Cantidad</string>
+    <string name="decrease_quantity">-</string>
+    <string name="increase_quantity">+</string>
 
     <!-- CartOptions -->
     <string name="product_on_cart">Producto agregado</string>
@@ -96,11 +98,20 @@
     <string name="menu">Menu</string>
 
     <!-- Profile / Account -->
+    <string name="edit_profile">Editar datos</string>
     <string name="save_changes">Guardar cambios</string>
+    <string name="cancel">Cancelar</string>
     <string name="profile_photo_short">Foto</string>
+    <string name="profile_updated">Perfil actualizado correctamente</string>
+    <string name="profile_update_error">No se pudo actualizar el perfil</string>
     <string name="profile_saved_placeholder">Datos guardados localmente por ahora</string>
     <string name="recent_purchases_placeholder">Compras recientes proximamente</string>
     <string name="purchase_history_placeholder">Historial de compras proximamente</string>
+    <string name="edit_profile_photo">Editar foto de perfil</string>
+    <string name="profile_photo_updated">Foto seleccionada correctamente</string>
+    <string name="no_profile_changes">No hay cambios para guardar</string>
+
+
 
     <!-- Menu -->
     <string name="offers">Ofertas</string>
@@ -121,8 +132,10 @@
     <string name="profile_photo_question">Quieres agregar una foto de perfil?</string>
     <string name="profile_photo_placeholder">Selector de imagen pendiente de implementar</string>
     <string name="profile_photo_skipped">Podras agregar una foto despues</string>
+    <string name="profile_photo_error">No se pudo cargar la foto de perfil</string>
     <string name="complete_required_fields">Completa todos los campos requeridos</string>
     <string name="passwords_do_not_match">Las contrasenas no coinciden</string>
     <string name="register_placeholder_success">Cuenta lista para conectar con la API</string>
+    <string name="register_success">Cuenta creada correctamente</string>
 
 </resources>

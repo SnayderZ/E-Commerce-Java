@@ -1,11 +1,17 @@
 package com.proyecto.e_commerce_java.presentation.home;
 
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Handler;
 import android.os.Bundle;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,12 +26,21 @@ import com.proyecto.e_commerce_java.presentation.navigation.BottomNavigationHelp
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity {
     public static final String EXTRA_TOKEN = "token";
+    public static final String EXTRA_FIRST_NAME = "first_name";
+    public static final String EXTRA_LAST_NAME = "last_name";
+    public static final String EXTRA_EMAIL = "email";
+    public static final String EXTRA_PROFILE_PHOTO = "profile_photo";
+
     private static final String SESSION_PREFERENCES = "session_preferences";
     private static final String KEY_TOKEN = "token";
+    private static final String KEY_FIRST_NAME = "profile_first_name";
+    private static final String KEY_LAST_NAME = "profile_last_name";
+    private static final String KEY_EMAIL = "profile_email";
+    private static final String KEY_PROFILE_PHOTO = "profile_photo";
+    private static final long SEARCH_DELAY_MILLIS = 350L;
 
     private HomeViewModel viewModel;
     private EditText searchInput;
@@ -34,7 +49,8 @@ public class HomeActivity extends AppCompatActivity {
     private RecyclerView productsRecyclerView;
     private ProductAdapter productAdapter;
     private String token;
-    private List<Product> allProducts = new ArrayList<>();
+    private final Handler searchHandler = new Handler(Looper.getMainLooper());
+    private final Runnable searchRunnable = this::searchProductsFromBackend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +67,39 @@ public class HomeActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             loadProducts();
         }
+
+        persistSessionProfileData();
+        String profilePhoto = resolveProfilePhoto();
+        loadProfilePhoto(profilePhoto);
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        String profilePhoto = getSharedPreferences(SESSION_PREFERENCES, MODE_PRIVATE)
+                .getString(KEY_PROFILE_PHOTO, "");
+
+        loadProfilePhoto(profilePhoto);
+    }
+
+
+    private void loadProfilePhoto(String profilePhoto) {
+        ImageView profileImage = findViewById(R.id.profileImage);
+
+        if (profilePhoto == null || profilePhoto.trim().isEmpty()) {
+            profileImage.setImageResource(R.drawable.ic_launcher_background);
+            return;
+        }
+
+        try {
+            byte[] imageBytes = Base64.decode(profilePhoto, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+            profileImage.setImageBitmap(bitmap);
+        } catch (Exception exception) {
+            profileImage.setImageResource(R.drawable.ic_launcher_background);
+        }
+    }
+
 
     private void bindViews() {
         searchInput = findViewById(R.id.searchInput);
@@ -72,6 +120,34 @@ public class HomeActivity extends AppCompatActivity {
         return preferences.getString(KEY_TOKEN, "");
     }
 
+    private String resolveProfilePhoto() {
+        SharedPreferences preferences = getSharedPreferences(SESSION_PREFERENCES, MODE_PRIVATE);
+        String intentProfilePhoto = getIntent().getStringExtra(EXTRA_PROFILE_PHOTO);
+
+        if (intentProfilePhoto != null && !intentProfilePhoto.trim().isEmpty()) {
+            preferences.edit().putString(KEY_PROFILE_PHOTO, intentProfilePhoto).apply();
+            return intentProfilePhoto;
+        }
+
+        return preferences.getString(KEY_PROFILE_PHOTO, "");
+    }
+
+    private void persistSessionProfileData() {
+        SharedPreferences.Editor editor = getSharedPreferences(SESSION_PREFERENCES, MODE_PRIVATE).edit();
+        putExtraIfPresent(editor, EXTRA_FIRST_NAME, KEY_FIRST_NAME);
+        putExtraIfPresent(editor, EXTRA_LAST_NAME, KEY_LAST_NAME);
+        putExtraIfPresent(editor, EXTRA_EMAIL, KEY_EMAIL);
+        editor.apply();
+    }
+
+    private void putExtraIfPresent(SharedPreferences.Editor editor, String extraKey, String preferenceKey) {
+        String value = getIntent().getStringExtra(extraKey);
+        if (value != null && !value.trim().isEmpty()) {
+            editor.putString(preferenceKey, value);
+        }
+    }
+
+
     private void configureProductsList() {
         productAdapter = new ProductAdapter(product -> {
             viewModel.addProduct(product);
@@ -86,8 +162,8 @@ public class HomeActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         viewModel.getProductsLiveData().observe(this, products -> {
-            allProducts = products == null ? new ArrayList<>() : products;
-            filterProducts();
+            List<Product> currentProducts = products == null ? new ArrayList<>() : products;
+            productAdapter.submitList(currentProducts);
         });
 
         viewModel.getErrorLiveData().observe(this, error -> {
@@ -105,7 +181,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
-                filterProducts();
+                scheduleProductSearch();
             }
 
             @Override
@@ -113,44 +189,44 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        nameFilterCheck.setOnCheckedChangeListener((buttonView, isChecked) -> filterProducts());
-        priceFilterCheck.setOnCheckedChangeListener((buttonView, isChecked) -> filterProducts());
+        nameFilterCheck.setOnCheckedChangeListener((buttonView, isChecked) -> searchProductsFromBackend());
+        priceFilterCheck.setOnCheckedChangeListener((buttonView, isChecked) -> searchProductsFromBackend());
     }
 
-    private void filterProducts() {
-        String query = searchInput.getText().toString().trim().toLowerCase(Locale.ROOT);
-        boolean filterByName = nameFilterCheck.isChecked();
-        boolean filterByPrice = priceFilterCheck.isChecked();
+    private void scheduleProductSearch() {
+        searchHandler.removeCallbacks(searchRunnable);
+        searchHandler.postDelayed(searchRunnable, SEARCH_DELAY_MILLIS);
+    }
 
-        if (query.isEmpty()) {
-            productAdapter.submitList(allProducts);
+    private void searchProductsFromBackend() {
+        if (token == null || token.trim().isEmpty()) {
+            Toast.makeText(this, R.string.no_session_token, Toast.LENGTH_SHORT).show();
             return;
         }
 
-        List<Product> filteredProducts = new ArrayList<>();
-
-        for (Product product : allProducts) {
-            boolean matches = false;
-
-            if (filterByName) {
-                matches = product.getName().toLowerCase(Locale.ROOT).contains(query);
-            }
-
-            if (filterByPrice) {
-                String priceText = String.format(Locale.US, "%.2f", product.getPrice());
-                matches = matches || priceText.contains(query);
-            }
-
-            if (!filterByName && !filterByPrice) {
-                matches = product.getName().toLowerCase(Locale.ROOT).contains(query);
-            }
-
-            if (matches) {
-                filteredProducts.add(product);
-            }
+        String search = buildBackendSearchQuery();
+        if (search == null) {
+            viewModel.loadProducts(token);
+            return;
         }
 
-        productAdapter.submitList(filteredProducts);
+        viewModel.searchProducts(token, search);
+    }
+
+    private String buildBackendSearchQuery() {
+        String query = searchInput.getText().toString().trim();
+        if (query.isEmpty()) {
+            return null;
+        }
+
+        boolean filterByName = nameFilterCheck.isChecked();
+        boolean filterByPrice = priceFilterCheck.isChecked();
+
+        if (filterByPrice && !filterByName) {
+            return "price:" + query;
+        }
+
+        return "name:" + query;
     }
 
     private void loadProducts() {
