@@ -130,6 +130,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         logoutButton.setOnClickListener(view -> logout());
     }
+    // evita que se borre la foto
     @Override
     protected void onResume() {
         super.onResume();
